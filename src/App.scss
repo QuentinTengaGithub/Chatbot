@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+.App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #bddfea;
+  .app-data-container {
+    h1 {
+      color: #2c2c2c;
+    }
+    margin: auto;
+  }
+  @media (max-width: 891px) {
+    .app-data-container {
+      h1 {
+        min-width: 500px;
+        width: 50vw;
+      }
+    }
+  }
+}
