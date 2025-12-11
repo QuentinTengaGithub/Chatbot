@@ -1,26 +1,17 @@
 import React, { useEffect, useRef } from "react";
 
-// Redux
 import { connect } from "react-redux";
 import { addMessageToChatFrom } from "../../Actions/Bot/botActions";
 
-// Styles
 import "./chatContent.scss";
-
-// Components
 import ChatItem from "./ChatItem";
-
-// Services
 import { getCovidData, getNews } from "../../Services/Bot/botAPI";
-
-// Constants
 import { bots } from "../../constants";
 
 function ChatContent(props) {
   let messagesEndRef = useRef(null);
   let inputRef = useRef(null);
 
-  // Component did mount
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -74,16 +65,32 @@ function ChatContent(props) {
    * Gets updated covid data
    */
   const getCovidCaseCounts = async () => {
-    let response = await getCovidData();
-    props.addMessageToChatFrom(
-      `The world covid report is as follows: ${response}`,
-      "bot1"
-    );
+    const data = await getCovidData();
+  
+    if (!data) {
+      props.addMessageToChatFrom(
+        "Sorry, I'm unable to fetch COVID data right now. Please try again later.",
+        "bot1"
+      );
+      return;
+    }
+  
+    const { newCases, newDeaths, totalCases, totalRecovered } = data;
+  
+    const msg = `
+      The world covid report is as follows:<br/><br/>
+      🦠 New Cases: <b>${newCases.toLocaleString()}</b><br/>
+      💀 New Deaths: <b>${newDeaths.toLocaleString()}</b><br/>
+      📈 Total Cases: <b>${totalCases.toLocaleString()}</b><br/>
+      💚 Total Recovered: <b>${totalRecovered.toLocaleString()}</b>
+        `.trim();
+    props.addMessageToChatFrom(msg, "bot1");
   };
+  
 
   const getNewsData = async () => {
     try {
-      const news = await getNews(); // string HTML avec les News X
+      const news = await getNews();
       const msg = `<b>Here are the latest headlines:</b><br/><br/>${news}`;
       props.addMessageToChatFrom(msg, "bot1");
     } catch (error) {
@@ -94,9 +101,6 @@ function ChatContent(props) {
     }
   };
 
-  /**
-   * Asks for keyword
-   */
   const askKeywordToSearch = () => {
     props.addMessageToChatFrom(
       `Please enter the keyword that you want to search about`,
@@ -105,7 +109,7 @@ function ChatContent(props) {
   };
 
   /**
-   * @desc Opens new tab and searches for you
+   * @desc 
    * @param {Search query} msg
    */
   const searchKeyword = (msg) => {
@@ -116,7 +120,7 @@ function ChatContent(props) {
   };
 
   /**
-   * @desc Sends message to chat that we entered
+   * @desc 
    * @param {value from inputRef} e
    */
   const sendMessageFromUser = (message = inputRef.current.value) => {

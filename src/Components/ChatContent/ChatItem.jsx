@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { animateStyle } from "../../constants";
 import Avatar from "../Avatar/Avatar";
 
 function ChatItem(props) {
-  // eslint-disable-next-line no-unused-vars
-  let [time, setTime] = useState(new Date().getTime());
+  const [time, setTime] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(id);
+  }, []);
+
   const getTime = () => {
-    let diff = new Date().getTime() - props.timeStamp.getTime();
+    let diff = time - props.timeStamp.getTime();
     let secs = diff / 1000;
     if (secs < 60) return `${Math.round(secs)} seconds ago`;
     else if (secs < 3600) {
@@ -18,22 +26,18 @@ function ChatItem(props) {
     }
   };
 
-  setInterval(() => {
-    setTime(new Date().getTime());
-  }, 1000);
-
   const getBotName = (type) => {
-    switch(type) {
+    switch (type) {
       case "bot1":
-        return "Ghost"
+        return "Ghost";
       case "bot2":
-        return "Transformer"
+        return "Transformer";
       case "bot3":
-        return "Holly"
+        return "Holly";
       default:
-        return "Quentin"
+        return "Quentin";
     }
-  }
+  };
 
   return (
     <div
@@ -43,8 +47,7 @@ function ChatItem(props) {
     >
       <div className="chat__item__content">
         <div className="chat__name">{getBotName(props.type)}</div>
-  
-        {/* ➜ Si c'est un bot, on interprète le HTML, sinon texte normal */}
+
         {props.type === "me" ? (
           <div className="chat__msg">{props.msg}</div>
         ) : (
@@ -53,7 +56,7 @@ function ChatItem(props) {
             dangerouslySetInnerHTML={{ __html: props.msg }}
           />
         )}
-  
+
         <div className="chat__meta">
           <span>{getTime()}</span>
         </div>
@@ -63,7 +66,6 @@ function ChatItem(props) {
       </div>
     </div>
   );
-  
 }
 
 export default ChatItem;

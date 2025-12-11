@@ -1,35 +1,29 @@
 import axios from 'axios';
 import { END_POINTS } from '../constantURL';
 
-// Get weather API
 export const getCovidData = async () => {
   const URL = `${END_POINTS.GET_COVID_DATA}`;
-  const response = await axios.get(URL);
-  let data = response.data;
-  if (!data) {
-    return "Some issue in fetching data! Please try again later.";
-  }
-  console.log(data);
-  const global = { ...data.Global };
-  const report = `New Confirmed: ${global.NewConfirmed}, New Deaths: ${global.NewDeaths}, New Recovered: ${global.NewRecovered}, Total Confirmed: ${global.TotalConfirmed}: TotalRecovered: ${global.TotalRecovered}`;
-  return report;
-};
 
-
-/*export const getNews = async () => {
-  const URL = `${END_POINTS.GET_NEWS}?country=us&apiKey=e72353979a9c4885b328e7aa6d2d88d7`;
   try {
     const response = await axios.get(URL);
-    if (response.data && response.data.articles) {
-      const articles = response.data.articles.slice(0, 5);
-      return articles.map((article, index) => `${index + 1}. ${article.title}`).join("\n");
+    const data = response.data;
+
+    if (!data) {
+      return null;
     }
-    return "No news available.";
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    return "An error occurred while fetching news.";
+
+    return {
+      newCases: data.todayCases,
+      newDeaths: data.todayDeaths,
+      totalCases: data.cases,
+      totalRecovered: data.recovered,
+    };
+  } catch (err) {
+    console.error("Error fetching COVID data:", err);
+    return null;
   }
-};*/
+};
+
 export const getNews = async () => {
   try {
     const response = await axios.get("/.netlify/functions/news");
@@ -37,7 +31,7 @@ export const getNews = async () => {
 
     const formatted = articles
       .map((article, i) => `<b>News ${i + 1}:</b> ${article.title}`)
-      .join("<br/><br/>"); // saut de ligne entre chaque news
+      .join("<br/><br/>");
 
     return formatted;
   } catch (err) {
