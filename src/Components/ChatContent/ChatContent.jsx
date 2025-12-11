@@ -91,7 +91,7 @@ function ChatContent(props) {
   const getNewsData = async () => {
     try {
       const news = await getNews();
-      const msg = `<b>Here are the latest headlines:</b><br/><br/>${news}`;
+      const msg = `Here are the latest headlines:<br/><br/>${news}`;
       props.addMessageToChatFrom(msg, "bot1");
     } catch (error) {
       props.addMessageToChatFrom(
