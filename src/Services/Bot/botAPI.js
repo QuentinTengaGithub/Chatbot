@@ -35,9 +35,11 @@ export const getNews = async () => {
     const response = await axios.get("/.netlify/functions/news");
     const articles = response.data.articles;
 
-    return articles
-      .map((article, i) => `${i + 1}. ${article.title}`)
-      .join("\n");
+    const formatted = articles
+      .map((article, i) => `<b>News ${i + 1}:</b> ${article.title}`)
+      .join("<br/><br/>"); // saut de ligne entre chaque news
+
+    return formatted;
   } catch (err) {
     console.error("Frontend error:", err);
     return "Error fetching news.";

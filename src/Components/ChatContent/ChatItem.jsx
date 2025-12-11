@@ -38,15 +38,22 @@ function ChatItem(props) {
   return (
     <div
       className={`chat__item ${props.type ? props.type : ""} ${animateStyle(
-        // "bounce"
-        // "wobble"
-        // "pulse"
         "rubberBand"
       )} animate__delay-0.5s`}
     >
       <div className="chat__item__content">
-        <div className="chat__name">{ getBotName(props.type)}</div>
-        <div className="chat__msg">{props.msg}</div>
+        <div className="chat__name">{getBotName(props.type)}</div>
+  
+        {/* ➜ Si c'est un bot, on interprète le HTML, sinon texte normal */}
+        {props.type === "me" ? (
+          <div className="chat__msg">{props.msg}</div>
+        ) : (
+          <div
+            className="chat__msg"
+            dangerouslySetInnerHTML={{ __html: props.msg }}
+          />
+        )}
+  
         <div className="chat__meta">
           <span>{getTime()}</span>
         </div>
@@ -56,6 +63,7 @@ function ChatItem(props) {
       </div>
     </div>
   );
+  
 }
 
 export default ChatItem;

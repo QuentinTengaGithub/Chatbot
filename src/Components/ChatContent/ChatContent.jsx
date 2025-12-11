@@ -83,10 +83,14 @@ function ChatContent(props) {
 
   const getNewsData = async () => {
     try {
-      const news = await getNews();
-      props.addMessageToChatFrom(`Here are the latest headlines:\n${news}`, "bot1");
+      const news = await getNews(); // string HTML avec les News X
+      const msg = `<b>Here are the latest headlines:</b><br/><br/>${news}`;
+      props.addMessageToChatFrom(msg, "bot1");
     } catch (error) {
-      props.addMessageToChatFrom("Unable to fetch news at the moment. Please try again later.", "bot1");
+      props.addMessageToChatFrom(
+        "Unable to fetch news at the moment. Please try again later.",
+        "bot1"
+      );
     }
   };
 
