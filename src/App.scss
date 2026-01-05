@@ -10,16 +10,38 @@
   justify-content: center;
   background-color: #bddfea;
   .app-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
+    width: min(900px, 92vw);
+
     h1 {
       color: #2c2c2c;
+      margin: 0;
+      max-width: 100%;
     }
     margin: auto;
   }
+
+  /* Mobile / small screens */
   @media (max-width: 891px) {
     .app-data-container {
+      gap: 14px;
       h1 {
-        min-width: 500px;
-        width: 50vw;
+        width: 92vw;
+        font-size: 22px;
+        line-height: 1.2;
+      }
+    }
+  }
+
+  @media (max-width: 420px) {
+    .app-data-container {
+      h1 {
+        font-size: 20px;
       }
     }
   }

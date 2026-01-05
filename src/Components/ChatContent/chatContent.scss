@@ -20,6 +20,23 @@
   background-color: #fdf8f5;
   border: 1px solid white;
 }
+
+/* Responsive tweaks */
+@media (max-width: 891px) {
+  .mainChatWindow {
+    width: 92vw;
+    padding: 16px;
+    min-height: 62vh;
+  }
+
+  .chat__item {
+    .chat__item__content {
+      max-width: 78%;
+      min-width: 0;
+      padding: 12px;
+    }
+  }
+}
 .current-chatting-user {
   display: flex;
   align-items: center;
